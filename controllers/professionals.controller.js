@@ -94,7 +94,8 @@ module.exports.login = (req, res, next) => {
             if (!professional){
                 throw createError('404', 'Password or number not found') 
             } else {
-                return professional.checkPassword('password')
+                console.log(professional.name)
+                return professional.checkPassword(password)
                     .then(match => {
                         if (!match){
                             throw createError('404', 'Password or number not found') 
