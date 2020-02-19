@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 
 const REASONS = ['a','b','c','d']
 const DIAGNOSIS = ['a','b','c','d']
-const TREATMENT = ['a','b','c','d']
-const PRICE = ['a','b','c','d']
+const TREATMENT = ['quiropodia','estudio de la pisada','silicona','cura papiloma','cirugía unguelar','cirugía papiloma','otro']
+const PRICE = [15,20,22,30]
 
 const appointmentSchema = new mongoose.Schema(
     {
@@ -14,14 +14,12 @@ const appointmentSchema = new mongoose.Schema(
         patient: {
             type: mongoose.Schema.Types.ObjectID,
             ref: 'Patient',
-            required: true,
-            unique: true
+            required: true
         },
         professional: {
             type: mongoose.Schema.Types.ObjectID,
             ref: 'Professional',
-            required: true,
-            unique: true
+            required: true
         },
         reasons: {
             type: String,

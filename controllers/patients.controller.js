@@ -11,7 +11,7 @@ module.exports.list = (req, res, next) => {
 }
 
 module.exports.get = (req,res,next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
     Patient.findById(req.params.id)
@@ -37,7 +37,7 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.update = (req,res,next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
     Patient.findByIdAndUpdate(req.params.id, req.body, {new:true})
@@ -53,7 +53,7 @@ module.exports.update = (req,res,next) => {
 }
 
 module.exports.delete = (req,res,next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
     Patient.findByIdAndDelete(req.params.id)

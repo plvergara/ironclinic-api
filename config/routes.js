@@ -22,10 +22,11 @@ router.delete('/professionals/:id',authMiddleware.isAuthenticated, professionals
 
 //Appointments
 router.get('/appointments',authMiddleware.isAuthenticated, appointmentsController.list)
-router.get('/appointments/:professional',authMiddleware.isAuthenticated, appointmentsController.filterProfessional)
-router.get('/appointments/:patient',authMiddleware.isAuthenticated, appointmentsController.filterPatient)
-router.post('/appointments',authMiddleware.isAuthenticated, appointmentsController.create)
 router.get('/appointments/:id',authMiddleware.isAuthenticated, appointmentsController.get)
+router.get('/appointments/professional/:professional',authMiddleware.isAuthenticated, appointmentsController.filterProfessional)
+router.get('/appointments/patient/:patient',authMiddleware.isAuthenticated, appointmentsController.filterPatient)
+router.get('/appointments/date:date', authMiddleware.isAuthenticated, appointmentsController.filterDate)
+router.post('/appointments',authMiddleware.isAuthenticated, appointmentsController.create)
 router.patch('/appointments/:id',authMiddleware.isAuthenticated, appointmentsController.update)
 router.delete('/appointments/:id',authMiddleware.isAuthenticated, appointmentsController.delete)
 
