@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 
-const REASONS = ['a','b','c','d']
-const DIAGNOSIS = ['a','b','c','d']
-const TREATMENT = ['quiropodia','estudio de la pisada','silicona','cura papiloma','cirugía unguelar','cirugía papiloma','otro']
-const PRICE = [15,20,22,30]
+const TREATMENT = ['quiropodia','estudio de la pisada','estudio de la pisada con plantillas','órtesis de silicona','cura papiloma','cirugía ungueal','cirugía papiloma','otro']
+const PRICE = [15,20,22,30,50,75,130,150,180,320,540]
 
 const appointmentSchema = new mongoose.Schema(
     {
@@ -22,12 +20,10 @@ const appointmentSchema = new mongoose.Schema(
             required: true
         },
         reasons: {
-            type: String,
-            enmun: REASONS
+            type: String
         },
         diagnosis: {
-            type: String,
-            enum: DIAGNOSIS
+            type: String
         },
         treatment: {
             type: String,

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 require('./medicalHistory.model')
 
+RATE = [Particular, Jubilado, Discapacitado]
+
 const patientSchema = new mongoose.Schema(
     {
         name: {
@@ -13,37 +15,38 @@ const patientSchema = new mongoose.Schema(
                 required:true
             }
         },
-        birthDate: {
-            type: Date,
-            required: true
-        },
-        DNI: {
-            type: String,
-            required: true,
-            unique: true
-        },
         phoneNumber: {
             type: Number,
             required: true,
             minlength: 9,
             maxlength: 13
         },
+        birthDate: {
+            type: Date
+        },
+        DNI: {
+            type: String,
+            unique: true
+        },
+        rate: {
+            type: String,
+            enum: RATE
+        },
+        profession: {
+            type: String
+        },
         address: {
             street: {
-                type: String,
-                required: true
+                type: String
             },
             locality: {
-                type: String,
-                required: true
+                type: String
             },
             province: {
-                type: String,
-                required: true
+                type: String
             },
             zipCode: {
                 type: Number,
-                required: true,
                 length: 5
             },
             other: {
@@ -55,8 +58,7 @@ const patientSchema = new mongoose.Schema(
             }
         },
         dataProtection: {
-            type: String,
-            required: true
+            type: String
         }
         
     },
