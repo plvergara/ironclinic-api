@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 require('./medicalHistory.model')
 
-RATE = [Particular, Jubilado, Discapacitado]
+RATE = ['Particular', 'Jubilado', 'Persona en Situación de Discapacidad']
 
 const patientSchema = new mongoose.Schema(
     {

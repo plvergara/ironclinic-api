@@ -79,27 +79,17 @@ module.exports.filterDate = (req, res, next) => {
 }
 
 module.exports.create = (req, res, next) => {
-    const paramsPatient = {DNI:req.body.patient}
-
     Patient.findOne(req.body.patient)
         .then(patient => {
             if(!patient) throw createError('404', 'Patient not found')
-            
-            const patientId = patient.id
             Professional.findOne(req.body.professional)
             .then(professional => {
                 if(!professional) throw createError('404', 'Professional not found')
-                const professionalId = professional.id
-                console.log(patientId, professionalId)
                 res.status(201)
                 const appointment = new Appointment(
                     {date:req.body.date,
-                    patient:patientId,
-                    professional:professionalId,
-                    reasons:req.body.reasons,
-                    diagnosis:req.body.diagnosis,
-                    treatment:req.body.treatment,
-                    price:req.body.price}
+                    patient:patient.id,
+                    professional:professional.id}
                     )
                 
                 appointment.save()

@@ -3,7 +3,7 @@ const router = express.Router()
 const patientsController = require('../controllers/patients.controller')
 const professionalsController = require('../controllers/professionals.controller')
 const appointmentsController = require('../controllers/appointments.controller.js')
-const mhController = require('../controllers/medicalsHistories.controller')
+const mhController = require('../controllers/medicalHistorys.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 //Patients
@@ -31,10 +31,10 @@ router.patch('/appointments/:id',authMiddleware.isAuthenticated, appointmentsCon
 router.delete('/appointments/:id',authMiddleware.isAuthenticated, appointmentsController.delete)
 
 //Medicals Historys
-router.get('/patients/medicalhistory',authMiddleware.isAuthenticated, mhController.get)
-router.post('patients/medicalhistory',authMiddleware.isAuthenticated, mhController.create)
-router.patch('patients/medicalhistory',authMiddleware.isAuthenticated, mhController.update)
-router.delete('patients/medicalhistory',authMiddleware.isAuthenticated, mhController.delete)
+router.get('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.get)
+router.post('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.create)
+router.patch('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.update)
+router.delete('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.delete)
 
 
 

@@ -7,7 +7,8 @@ module.exports.get = (req,res,next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    MedicalHistory.findById(req.params.id)
+    MedicalHistory.findOne({patient:req.params.id})
+    .populate('patient')
         .then(
             medicalHistory => {
                 if (!medicalHistory){
@@ -20,20 +21,23 @@ module.exports.get = (req,res,next) => {
 }
 
 module.exports.create = (req,res,next) => {
-    const medicalHistory = new MedicalHistory(req.body)
-
-    medicalHistory.save()
-            .then(
-                medicalHistory => res.status(201).json(medicalHistory)
-            )
-        .catch(next)
+    Patient.findById(req.params.id)
+    .then(patient => {
+            if(!patient) throw createError('404', 'Patient not found')
+            const medicalHistory = new MedicalHistory(req.body)
+            medicalHistory.save()
+                    .then(
+                        medicalHistory => res.status(201).json(medicalHistory)
+                    )
+    })
+    .catch(next)
 }
 
 module.exports.update = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    MedicalHistory.findByIdAndUpdate(req.params.id, req.body, { new:true })
+    MedicalHistory.findOneAndUpdate({patient:req.params.id}, req.body, { new:true })
         .then(
             medicalHistory => {
                 if(!medicalHistory){
@@ -49,7 +53,7 @@ module.exports.delete = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    MedicalHistory.findByIdAndDelete(req.params.id)
+    MedicalHistory.findOneAndDelete({patient:req.params.id})
         .then(
             medicalHistory => {
                 if(!medicalHistory){
