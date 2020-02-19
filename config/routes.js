@@ -3,7 +3,7 @@ const router = express.Router()
 const patientsController = require('../controllers/patients.controller')
 const professionalsController = require('../controllers/professionals.controller')
 const appointmentsController = require('../controllers/appointments.controller.js')
-const mhController = require('../controllers/medicalHistorys.controller')
+const mhController = require('../controllers/medicalHistories.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
 
 //Patients
