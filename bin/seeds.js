@@ -44,29 +44,29 @@ Promise.all([
         })
         .catch(console.error)
     }
-    for (let i = 0; i < 30; i++) {
-      const patient = new Patient({
-        name: {
-            firstName:faker.name.firstName(),
-            lastName:faker.name.lastName()
-        },
-        birthDate:faker.date.past(),
-        DNI:faker.random.number(),
-        phoneNumber:609269916,
-        address:{
-          street:faker.address.streetName(),
-          locality:faker.address.city(),
-          province:faker.address.state(),
-          zipCode:28933
-        },
-        dataProtection:faker.image.imageUrl(),
-        createdAt: faker.date.past()
-      })
+    // for (let i = 0; i < 30; i++) {
+    //   const patient = new Patient({
+    //     name: {
+    //         firstName:faker.name.firstName(),
+    //         lastName:faker.name.lastName()
+    //     },
+    //     birthDate:faker.date.past(),
+    //     DNI:faker.random.number(),
+    //     phoneNumber:609269916,
+    //     address:{
+    //       street:faker.address.streetName(),
+    //       locality:faker.address.city(),
+    //       province:faker.address.state(),
+    //       zipCode:28933
+    //     },
+    //     dataProtection:faker.image.imageUrl(),
+    //     createdAt: faker.date.past()
+    //   })
 
-      patient.save()
-        .then(patient => {
-          console.log(patient.name)
-        })
-        .catch(console.error)
-    }
+    //   patient.save()
+    //     .then(patient => {
+    //       console.log(patient.name)
+    //     })
+    //     .catch(console.error)
+    // }
   })
