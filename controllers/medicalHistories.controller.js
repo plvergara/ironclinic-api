@@ -23,12 +23,30 @@ module.exports.get = (req,res,next) => {
 module.exports.create = (req,res,next) => {
     Patient.findById(req.params.id)
     .then(patient => {
-            if(!patient) throw createError('404', 'Patient not found')
-            const medicalHistory = new MedicalHistory(req.body)
-            medicalHistory.save()
-                    .then(
-                        medicalHistory => res.status(201).json(medicalHistory)
-                    )
+        if(!patient) throw createError('404', 'Patient not found')
+        const medicalHistory = new MedicalHistory({
+                ...req.body,
+                patient: req.params.id
+            })
+        medicalHistory.save()
+        .then(medicalHistory => {    
+            Patient.aggregate([
+                { $group: { _id: null, maxNumber: { $max: '$number' }}},
+                { $project: { _id: 0, maxNumber: 1 }}
+          ]).
+          then(maxNum => {
+                let max=maxNum[0].maxNumber
+                patient.number = max + 1      
+                patient.save()
+                .then (() => {
+                    res.status(201).json(medicalHistory)
+                })
+                .catch(next)
+          })
+          .catch(next)
+            
+        })
+        .catch(next)
     })
     .catch(next)
 }
@@ -49,18 +67,18 @@ module.exports.update = (req, res, next) => {
         .catch(next)
 }
 
-module.exports.delete = (req, res, next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        throw createError('404', 'Invalid Id')
-    }
-    MedicalHistory.findOneAndDelete({patient:req.params.id})
-        .then(
-            medicalHistory => {
-                if(!medicalHistory){
-                    throw createError('404', 'MedicalHistory not found')
-                }
-                res.status(204).json
-            }
-        )
-        .catch(next)
-}
+// module.exports.delete = (req, res, next) => {
+//     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//         throw createError('404', 'Invalid Id')
+//     }
+//     MedicalHistory.findOneAndDelete({patient:req.params.id})
+//         .then(
+//             medicalHistory => {
+//                 if(!medicalHistory){
+//                     throw createError('404', 'MedicalHistory not found')
+//                 }
+//                 res.status(204).json
+//             }
+//         )
+//         .catch(next)
+// }

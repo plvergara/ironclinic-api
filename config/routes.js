@@ -34,7 +34,7 @@ router.delete('/appointments/:id',authMiddleware.isAuthenticated, appointmentsCo
 router.get('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.get)
 router.post('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.create)
 router.patch('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.update)
-router.delete('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.delete)
+// router.delete('/patients/:id/medicalhistory',authMiddleware.isAuthenticated, mhController.delete)
 
 
 

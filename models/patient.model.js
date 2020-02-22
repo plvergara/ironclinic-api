@@ -16,6 +16,9 @@ const patientSchema = new mongoose.Schema(
                 required:true
             }
         },
+        number:{
+            type: Number
+        },
         phoneNumber: {
             type: Number,
             required: true,
@@ -45,7 +48,6 @@ const patientSchema = new mongoose.Schema(
                         if (docu.format === 'NIE' && number.slice(0,1) === 'X') number = number.replace("X","0")
                         if (docu.format === 'NIE' && number.slice(0,1) === 'Y') number = number.replace("Y","1")
                         if (docu.format === 'NIE' && number.slice(0,1) === 'Z') number = number.replace("Z","2")
-                        console.log(number)
                         const digits = "TRWAGMYFPDXBNJZSQVHLCKE"
                         const DNInum = Number(number.match(/\d+/g)[0])
                         const DNIletter = number.match(/[a-zA-Z]+/g)

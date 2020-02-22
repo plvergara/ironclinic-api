@@ -1,4 +1,5 @@
 const Patient = require('../models/patient.model')
+const MedicalHistory = require('../models/medicalHistory.model')
 const createError = require('http-errors')
 const mongoose = require('mongoose')
 
@@ -28,7 +29,7 @@ module.exports.get = (req,res,next) => {
 
 module.exports.create = (req, res, next) => {
     const patient = new Patient(req.body)
-
+    
     patient.save()
         .then(
             patient => res.status(201).json(patient)
@@ -56,16 +57,26 @@ module.exports.delete = (req,res,next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    Patient.findByIdAndDelete(req.params.id)
-        .then(
-            patient => {
-                if (!patient) {
-                    throw createError('404', 'Patient not found')
+    MedicalHistory.findOneAndDelete({patient:req.params.id})
+            .then(
+                medicalHistory => {
+                    if(!medicalHistory){
+                        Patient.findByIdAndDelete(req.params.id)
+                        .then(
+                            patient => {
+                                if (!patient) {
+                                    throw createError('404', 'Patient not found')
+                                }
+                                res.status(204).json
+                            }
+                        )
+                        .catch(next)
+                        throw createError('404', 'MedicalHistory not found')
+                        
+                    }
+                    throw createError('503', 'is not possible delete Patient')
                 }
-                res.status(204).json
-            }
-        )
-        .catch(next)
+            )
 }
 
 module.exports.filter = (req, res, next) => {
