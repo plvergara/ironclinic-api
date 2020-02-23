@@ -13,28 +13,28 @@ Promise.all([
 
 
   .then(() => {
-    const chari = new Professional ({
+    const chari = new Professional({
       name: {
-          firstName:'Rosario',
-          lastName:'Orozco'
+        firstName: 'Rosario',
+        lastName: 'Orozco'
       },
-      password:"12345678",
-      cNumber:2722,
+      password: "12345678",
+      cNumber: 2722,
       createdAt: faker.date.past()
     })
     chari.save()
-            .then(chari => {
-              console.log(chari.name, ' ', chari.cNumber, ' ', chari.password)
-            })
-            .catch(console.error)
+      .then(chari => {
+        console.log(chari.name, ' ', chari.cNumber, ' ', chari.password)
+      })
+      .catch(console.error)
     for (let i = 0; i < 3; i++) {
       const professional = new Professional({
         name: {
-            firstName:faker.name.firstName(),
-            lastName:faker.name.lastName()
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName()
         },
-        password:"12345678",
-        cNumber:faker.random.number(),
+        password: "12345678",
+        cNumber: faker.random.number(),
         createdAt: faker.date.past()
       })
 

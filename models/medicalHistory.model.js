@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const medicalHistorySchema = new mongoose.Schema (
+const medicalHistorySchema = new mongoose.Schema(
     {
         patient: {
             type: mongoose.Schema.Types.ObjectID,
@@ -30,22 +30,24 @@ const medicalHistorySchema = new mongoose.Schema (
             type: String,
             required: true
         },
-        files:[{
-            type:String
+        files: [{
+            type: String
         }]
     },
     {
-		timestamps: true,
-		toJSON: {
-			transform: (doc, ret) => {
-				ret.id = doc._id;
-				delete ret._id;
-				delete ret.__v;
-				return ret;
-			}
-		}
-	}
+        timestamps: true,
+        toJSON: {
+            transform: (doc, ret) => {
+                ret.id = doc._id;
+                delete ret._id;
+                delete ret.__v;
+                return ret;
+            }
+        }
+    }
 )
+
+medicalHistorySchema.index({ '$**': 'text' })
 
 const MedicalHistory = new mongoose.model('medicalHistory', medicalHistorySchema)
 module.exports = MedicalHistory

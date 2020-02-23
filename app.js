@@ -27,7 +27,7 @@ app.use(session)
 app.use((req, _, next) => {
     req.currentUser = req.session.user
     next()
-  })
+})
 
 /**
  * Configure routes

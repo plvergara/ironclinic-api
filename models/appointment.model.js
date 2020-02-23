@@ -1,11 +1,18 @@
 const mongoose = require('mongoose')
 
-const TREATMENT = ['quiropodia','estudio de la pisada','estudio de la pisada con plantillas','órtesis de silicona','cura papiloma','cirugía ungueal','cirugía papiloma','otro']
-const PRICE = [15,20,22,30,50,75,130,150,180,320,540]
+const TREATMENT = ['quiropodia',
+    'estudio de la pisada',
+    'estudio de la pisada con plantillas',
+    'órtesis de silicona',
+    'cura papiloma',
+    'cirugía ungueal',
+    'cirugía papiloma',
+    'otro']
+const PRICE = [15, 20, 22, 30, 50, 75, 130, 150, 180, 320, 540]
 
 const appointmentSchema = new mongoose.Schema(
     {
-        date:{
+        date: {
             type: Date,
             required: true
         },
@@ -35,17 +42,18 @@ const appointmentSchema = new mongoose.Schema(
         }
     },
     {
-		timestamps: true,
-		toJSON: {
-			transform: (doc, ret) => {
-				ret.id = doc._id;
-				delete ret._id;
-				delete ret.__v;
-				return ret;
-			}
-		}
-	}
+        timestamps: true,
+        toJSON: {
+            transform: (doc, ret) => {
+                ret.id = doc._id;
+                delete ret._id;
+                delete ret.__v;
+                return ret;
+            }
+        }
+    }
 )
 
+appointmentSchema.index({ '$**': 'text' })
 const Appointment = mongoose.model('Appointment', appointmentSchema)
 module.exports = Appointment

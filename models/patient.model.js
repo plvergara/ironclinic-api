@@ -2,21 +2,21 @@ const mongoose = require('mongoose')
 require('./medicalHistory.model')
 
 RATE = ['Particular', 'Jubilado', 'Persona en Situación de Discapacidad']
-DOCUTYPE = ['DNI','NIE','OTRO']
+DOCUTYPE = ['DNI', 'NIE', 'OTRO']
 
 const patientSchema = new mongoose.Schema(
     {
         name: {
             firstName: {
                 type: String,
-                required:true
+                required: true
             },
             lastName: {
                 type: String,
-                required:true
+                required: true
             }
         },
-        number:{
+        number: {
             type: Number
         },
         phoneNumber: {
@@ -28,26 +28,27 @@ const patientSchema = new mongoose.Schema(
         birthDate: {
             type: Date
         },
-        identification:{
+        identification: {
             type: {
-                format:{
+                format: {
                     type: String,
                     enum: DOCUTYPE
                 },
                 number: {
-                    type: String                
+                    type: String
                 }
             },
-            uppercase:true,
+            uppercase: true,
             unique: true,
-            validate:{
+            validate: {
                 validator: docu => {
-                    if ( docu.format === 'DNI' || docu.format === 'NIE') {
+                    if (docu.format === 'DNI' || docu.format === 'NIE') {
                         let number = docu.number
-                        if (docu.format === 'NIE' && !(number.slice(0,1) === 'X' || number.slice(0,1) === 'Y' || number.slice(0,1) === 'Z')) return false
-                        if (docu.format === 'NIE' && number.slice(0,1) === 'X') number = number.replace("X","0")
-                        if (docu.format === 'NIE' && number.slice(0,1) === 'Y') number = number.replace("Y","1")
-                        if (docu.format === 'NIE' && number.slice(0,1) === 'Z') number = number.replace("Z","2")
+                        if (docu.format === 'NIE' && !(number.slice(0, 1) === 'X'
+                            || number.slice(0, 1) === 'Y' || number.slice(0, 1) === 'Z')) return false
+                        if (docu.format === 'NIE' && number.slice(0, 1) === 'X') number = number.replace("X", "0")
+                        if (docu.format === 'NIE' && number.slice(0, 1) === 'Y') number = number.replace("Y", "1")
+                        if (docu.format === 'NIE' && number.slice(0, 1) === 'Z') number = number.replace("Z", "2")
                         const digits = "TRWAGMYFPDXBNJZSQVHLCKE"
                         const DNInum = Number(number.match(/\d+/g)[0])
                         const DNIletter = number.match(/[a-zA-Z]+/g)
@@ -55,12 +56,12 @@ const patientSchema = new mongoose.Schema(
                         const letterValidation = digits[DNInum % 23]
                         return DNIletter[0] === letterValidation
                     }
-                    else true   
-                    },
+                    else true
+                },
                 message: 'incorrect format'
             }
         },
-        
+
         rate: {
             type: String,
             enum: RATE
@@ -87,25 +88,25 @@ const patientSchema = new mongoose.Schema(
             },
             country: {
                 type: String,
-                default:  'Spain'
+                default: 'Spain'
             }
         },
         dataProtection: {
             type: String
         }
-        
+
     },
     {
-		timestamps: true,
-		toJSON: {
+        timestamps: true,
+        toJSON: {
             virtuals: true,
-			transform: (doc, ret) => {
-				ret.id = doc._id;
-				delete ret._id;
-				delete ret.__v;
-				return ret;
-			}
-		}
+            transform: (doc, ret) => {
+                ret.id = doc._id;
+                delete ret._id;
+                delete ret.__v;
+                return ret;
+            }
+        }
     }
 )
 
@@ -114,7 +115,9 @@ patientSchema.virtual('medicalHistory', {
     localField: 'id',
     foreignField: 'patient',
     justOne: false,
-  });
+});
+
+patientSchema.index({ '$**': 'text' })
 
 const Patient = new mongoose.model('Patient', patientSchema)
 module.exports = Patient

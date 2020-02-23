@@ -7,16 +7,16 @@ const professionalSchema = new mongoose.Schema(
         name: {
             firstName: {
                 type: String,
-                required:true
+                required: true
             },
             lastName: {
                 type: String,
-                required:true
+                required: true
             }
         },
         password: {
             type: String,
-			required: [true, "A password is required"],
+            required: [true, "A password is required"],
             minlength: [8, "At least 8 characters are required"]
         },
         specialty: {
@@ -30,26 +30,26 @@ const professionalSchema = new mongoose.Schema(
         }
     },
     {
-		timestamps: true,
-		toJSON: {
-			transform: (doc, ret) => {
-				ret.id = doc._id;
-				delete ret._id;
-				delete ret.__v;
-				return ret;
-			}
-		}
-	}
+        timestamps: true,
+        toJSON: {
+            transform: (doc, ret) => {
+                ret.id = doc._id;
+                delete ret._id;
+                delete ret.__v;
+                return ret;
+            }
+        }
+    }
 )
 
-professionalSchema.pre('save', function(next){
+professionalSchema.pre('save', function (next) {
     const professional = this
 
-    if (professional.isModified('password')){
+    if (professional.isModified('password')) {
         bcrypt.genSalt(SALT_WORK_FACTOR)
             .then(salt => {
                 return bcrypt.hash(professional.password, salt)
-                    .then(hash =>{
+                    .then(hash => {
                         professional.password = hash
                         next()
                     })
@@ -60,7 +60,9 @@ professionalSchema.pre('save', function(next){
     }
 })
 
-professionalSchema.methods.checkPassword = function(password){
+professionalSchema.index({ '$**': 'text' })
+
+professionalSchema.methods.checkPassword = function (password) {
     return bcrypt.compare(password, this.password)
 }
 

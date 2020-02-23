@@ -11,7 +11,7 @@ module.exports.list = (req, res, next) => {
         .catch(next)
 }
 
-module.exports.get = (req,res,next) => {
+module.exports.get = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
@@ -29,7 +29,7 @@ module.exports.get = (req,res,next) => {
 
 module.exports.create = (req, res, next) => {
     const patient = new Patient(req.body)
-    
+
     patient.save()
         .then(
             patient => res.status(201).json(patient)
@@ -37,11 +37,11 @@ module.exports.create = (req, res, next) => {
         .catch(next)
 }
 
-module.exports.update = (req,res,next) => {
+module.exports.update = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    Patient.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    Patient.findByIdAndUpdate(req.params.id, req.body, { new: true })
         .then(
             patient => {
                 if (!patient) {
@@ -53,15 +53,15 @@ module.exports.update = (req,res,next) => {
         .catch(next)
 }
 
-module.exports.delete = (req,res,next) => {
+module.exports.delete = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         throw createError('404', 'Invalid Id')
     }
-    MedicalHistory.findOneAndDelete({patient:req.params.id})
-            .then(
-                medicalHistory => {
-                    if(!medicalHistory){
-                        Patient.findByIdAndDelete(req.params.id)
+    MedicalHistory.findOneAndDelete({ patient: req.params.id })
+        .then(
+            medicalHistory => {
+                if (!medicalHistory) {
+                    Patient.findByIdAndDelete(req.params.id)
                         .then(
                             patient => {
                                 if (!patient) {
@@ -71,23 +71,23 @@ module.exports.delete = (req,res,next) => {
                             }
                         )
                         .catch(next)
-                        throw createError('404', 'MedicalHistory not found')
-                        
-                    }
-                    throw createError('503', 'is not possible delete Patient')
+                    throw createError('404', 'MedicalHistory not found')
+
                 }
-            )
+                throw createError('503', 'is not possible delete Patient')
+            }
+        )
 }
 
 module.exports.filter = (req, res, next) => {
     Patient.find(req.body)
-    .then(
-        patients => {
-            if (!patients) {
-                throw createError('404', 'Patients or patient not found')
+        .then(
+            patients => {
+                if (!patients) {
+                    throw createError('404', 'Patients or patient not found')
+                }
+                res.status(201).json(patients)
             }
-            res.status(201).json(patients)
-        }
-    )
-    .catch(next)
+        )
+        .catch(next)
 }
