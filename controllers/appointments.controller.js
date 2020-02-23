@@ -55,34 +55,51 @@ module.exports.get = (req, res, next) => {
 //         .catch(next)
 // }
 module.exports.filterProfessional = (req, res, next) => {
-    Appointment.find({ professional: req.params.id })
-        .populate('patient')
-        .populate('professional')
-        .then(
-            appointments => {
-                if (appointments.length === 0) {
-                    throw createError('404', 'Appointments not found')
-                }
-                res.status(200).json(appointments)
-            }
-        )
-        .catch(next)
+    const criteria = req.query.search
+
+        ? { $text: { $search: req.query.search } }
+
+        : {}
+    Professional.find(criteria)
+        .then(professionals => {
+            Appointment.find({ professional: professionals })
+                .populate('patient')
+                .populate('professional')
+                .then(
+                    appointments => {
+                        if (appointments.length === 0) {
+                            throw createError('404', 'Appointments not found')
+                        }
+                        res.status(200).json(appointments)
+                    }
+                )
+                .catch(next)
+        })
+        .catch('404', 'Appointments not found')
 }
 
 module.exports.filterPatient = (req, res, next) => {
+    const criteria = req.query.search
 
-    Appointment.find({ patient: req.query.search })
-        .populate('patient')
-        .populate('professional')
-        .then(
-            appointments => {
-                if (appointments.length === 0) {
-                    throw createError('404', 'Appointments not found')
-                }
-                res.status(200).json(appointments)
-            }
-        )
-        .catch(next)
+        ? { $text: { $search: req.query.search } }
+
+        : {}
+    Patient.find(criteria)
+        .then(patients => {
+            Appointment.find({ patient: patients })
+                .populate('patient')
+                .populate('professional')
+                .then(
+                    appointments => {
+                        if (appointments.length === 0) {
+                            throw createError('404', 'Appointments not found')
+                        }
+                        res.status(200).json(appointments)
+                    }
+                )
+                .catch(next)
+        })
+        .catch('404', 'Appointments not found')
 }
 
 module.exports.filterDate = (req, res, next) => {

@@ -24,8 +24,8 @@ router.delete('/professionals/:id', authMiddleware.isAuthenticated, professional
 router.get('/appointments', authMiddleware.isAuthenticated, appointmentsController.list)
 
 // router.get('/appointments/find', authMiddleware.isAuthenticated, appointmentsController.find)
-router.get('/appointments/professional/:id', authMiddleware.isAuthenticated, appointmentsController.filterProfessional)
-router.get('/appointments/patient/:id', authMiddleware.isAuthenticated, appointmentsController.filterPatient)
+router.get('/appointments/professionals', authMiddleware.isAuthenticated, appointmentsController.filterProfessional)
+router.get('/appointments/patients', authMiddleware.isAuthenticated, appointmentsController.filterPatient)
 router.get('/appointments/date', authMiddleware.isAuthenticated, appointmentsController.filterDate)
 router.post('/appointments', authMiddleware.isAuthenticated, appointmentsController.create)
 router.get('/appointments/:id', authMiddleware.isAuthenticated, appointmentsController.get)
