@@ -33,13 +33,13 @@ module.exports.get = (req, res, next) => {
         .catch(next)
 }
 
-// module.exports.list = (req, res, next) => {
+// module.exports.filter = (req, res, next) => {
 //     const criteria = req.query.search
 
 //         ? { $text: { $search: req.query.search } }
 
 //         : {}
-//     console.log(criteria)
+//         console.log(Object.keys(req.query))
 //     Appointment.find(criteria)
 //         .sort({ date: -1 })
 //         .populate('patient')
@@ -63,13 +63,11 @@ module.exports.filterProfessional = (req, res, next) => {
     Professional.find(criteria)
         .then(professionals => {
             Appointment.find({ professional: professionals })
+                .sort({ date: -1 })
                 .populate('patient')
                 .populate('professional')
                 .then(
                     appointments => {
-                        if (appointments.length === 0) {
-                            throw createError('404', 'Appointments not found')
-                        }
                         res.status(200).json(appointments)
                     }
                 )
@@ -79,12 +77,14 @@ module.exports.filterProfessional = (req, res, next) => {
 }
 
 module.exports.filterPatient = (req, res, next) => {
+    const score = { score: { $meta: 'textScore' } }
     const criteria = req.query.search
 
+        // ? { $text: { $search: req.query.search } }
         ? { $text: { $search: req.query.search } }
 
         : {}
-    Patient.find(criteria)
+    Patient.find(criteria, score)
         .then(patients => {
             Appointment.find({ patient: patients })
                 .populate('patient')
