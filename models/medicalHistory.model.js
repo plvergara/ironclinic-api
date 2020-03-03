@@ -22,10 +22,10 @@ const medicalHistorySchema = new mongoose.Schema(
                 default: 'none'
             }
         },
-        medications: [{
+        medications: {
             type: String,
             default: 'none'
-        }],
+        },
         diagnosticJudgment: {
             type: String,
             required: true
