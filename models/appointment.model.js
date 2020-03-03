@@ -20,7 +20,7 @@ const appointmentSchema = new mongoose.Schema(
             type: Date,
             required: true
         },
-        finisHour: {
+        endHour: {
             type: Date,
             required: true
         },

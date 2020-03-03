@@ -4,15 +4,13 @@ const SALT_WORK_FACTOR = 10
 
 const professionalSchema = new mongoose.Schema(
     {
-        name: {
-            firstName: {
-                type: String,
-                required: true
-            },
-            lastName: {
-                type: String,
-                required: true
-            }
+        firstName: {
+            type: String,
+            required: true
+        },
+        lastName: {
+            type: String,
+            required: true
         },
         password: {
             type: String,

@@ -112,5 +112,5 @@ module.exports.login = (req, res, next) => {
 
 module.exports.logout = (req, res) => {
     req.session.destroy()
-    res.status(204).json
+    res.status(204).json()
 }

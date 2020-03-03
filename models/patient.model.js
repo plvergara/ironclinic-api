@@ -6,15 +6,13 @@ DOCUTYPE = ['DNI', 'NIE', 'OTRO']
 
 const patientSchema = new mongoose.Schema(
     {
-        name: {
-            firstName: {
-                type: String,
-                required: true
-            },
-            lastName: {
-                type: String,
-                required: true
-            }
+        firstName: {
+            type: String,
+            required: true
+        },
+        lastName: {
+            type: String,
+            required: true
         },
         number: {
             type: Number
@@ -39,7 +37,7 @@ const patientSchema = new mongoose.Schema(
                 }
             },
             uppercase: true,
-            unique: true,
+            required: true,
             validate: {
                 validator: docu => {
                     if (docu.format === 'DNI' || docu.format === 'NIE') {
@@ -54,9 +52,15 @@ const patientSchema = new mongoose.Schema(
                         const DNIletter = number.match(/[a-zA-Z]+/g)
                         if (DNIletter === null) return false
                         const letterValidation = digits[DNInum % 23]
+                        docu.unique = true
                         return DNIletter[0] === letterValidation
+
                     }
-                    else true
+                    else {
+                        docu.unique = false
+                        return true
+                    }
+
                 },
                 message: 'incorrect format'
             }

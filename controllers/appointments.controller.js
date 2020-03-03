@@ -129,29 +129,21 @@ module.exports.filterDate = (req, res, next) => {
 }
 
 module.exports.create = (req, res, next) => {
-    Patient.findOne(req.body.patient)
-        .then(patient => {
-            if (!patient) throw createError('404', 'Patient not found')
-            Professional.findOne(req.body.professional)
-                .then(professional => {
-                    if (!professional) throw createError('404', 'Professional not found')
-                    res.status(201)
-                    const appointment = new Appointment(
-                        {
-                            date: `${req.body.date}Z`,
-                            patient: patient.id,
-                            professional: professional.id
-                        }
-                    )
+    const appointment = new Appointment(
+        {
+            date: new Date(`${req.body.date}Z`),
+            startHour: new Date(`${req.body.date}T${req.body.startHour}Z`),
+            endHour: new Date(`${req.body.date}T${req.body.endHour}Z`),
+            treatment: req.body.treatment,
+            patient: req.body.patient,
+            professional: req.body.professional
+        }
+    )
 
-                    appointment.save()
-                        .then(
-                            appointment => res.status(201).json(appointment)
-                        )
-                        .catch(next)
-                })
-                .catch(next)
-        })
+    appointment.save()
+        .then(
+            appointment => res.status(201).json(appointment)
+        )
         .catch(next)
 
 }
