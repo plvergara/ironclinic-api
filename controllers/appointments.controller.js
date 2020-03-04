@@ -63,7 +63,7 @@ module.exports.filterProfessional = (req, res, next) => {
     Professional.find(criteria)
         .then(professionals => {
             Appointment.find({ professional: professionals })
-                .sort({ date: -1 })
+                .sort({ date: 0 })
                 .populate('patient')
                 .populate('professional')
                 .then(
@@ -91,9 +91,6 @@ module.exports.filterPatient = (req, res, next) => {
                 .populate('professional')
                 .then(
                     appointments => {
-                        if (appointments.length === 0) {
-                            throw createError('404', 'Appointments not found')
-                        }
                         res.status(200).json(appointments)
                     }
                 )
@@ -112,16 +109,11 @@ module.exports.filterDate = (req, res, next) => {
     let start = new Date(req.query.date + startHour)
     let end = new Date(req.query.date + endHour)
     let query = { date: { $gte: start, $lte: end } }
-    console.log(query)
-    console.log(new Date())
-    Appointment.find(query).sort({ date: -1 })
+    Appointment.find(query).sort({ date: 0 })
         .populate('patient')
         .populate('professional')
         .then(
             appointments => {
-                if (appointments.length === 0) {
-                    throw createError('404', 'Appointments not found')
-                }
                 res.status(200).json(appointments)
             }
         )

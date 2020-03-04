@@ -8,19 +8,18 @@ const medicalHistorySchema = new mongoose.Schema(
             required: true,
             unique: true
         },
-        medicalRecords: {
-            illnesses: {
-                type: String,
-                default: 'none'
-            },
-            allergies: {
-                type: String,
-                default: 'none'
-            },
-            surgeries: {
-                type: String,
-                default: 'none'
-            }
+        illnesses: {
+            type: String,
+            default: 'none'
+        },
+        allergies: {
+            type: String,
+            default: 'none'
+        },
+        surgeries: {
+            type: String,
+            default: 'none'
+
         },
         medications: {
             type: String,
