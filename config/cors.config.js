@@ -1,7 +1,7 @@
 const cors = require('cors')
 
 const corsMiddleware = cors({
-	origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+	origin: 'https://desolate-mesa-79777.herokuapp.com' || 'http://localhost:3000',
 	credentials: true
 })
 
