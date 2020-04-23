@@ -80,7 +80,6 @@ module.exports.filterPatient = (req, res, next) => {
     const score = { score: { $meta: 'textScore' } }
     const criteria = req.query.search
 
-        // ? { $text: { $search: req.query.search } }
         ? { $text: { $search: req.query.search } }
 
         : {}
